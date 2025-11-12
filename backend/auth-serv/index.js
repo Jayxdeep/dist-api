@@ -1,13 +1,17 @@
 import express from 'express';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+dotenv.config();
 const app=express();
 app.use(express.json());
 app.use(cors());
-const SECRECT_KEY="mysecret123";
+const SECRECT_KEY=process.env.JWT_SECRET;
+const USERNAME=process.env.USER_USERNAME;
+const PASSWORD=process.env.USER_PASSWORD;
 app.post('/login',(req,res)=>{
     const{username,password}=req.body;
-    if(username==="jay" && password==="123"){
+    if(username===USERNAME && password===PASSWORD){
         const token=jwt.sign(
             {user:username},
             SECRECT_KEY,
