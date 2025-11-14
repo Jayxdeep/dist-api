@@ -2,20 +2,25 @@ import express from 'express';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({path: "../.env"});
 const app=express();
 app.use(express.json());
 app.use(cors());
-const SECRECT_KEY=process.env.JWT_SECRET;
+const SECRET_KEY=process.env.SECRET_KEY;
 const USERNAME=process.env.USER_USERNAME;
 const PASSWORD=process.env.USER_PASSWORD;
+console.log("auth env",{
+    SECRET_KEY,
+    USERNAME,
+    PASSWORD
+})
 app.post('/login',(req,res)=>{
     const{username,password}=req.body;
     if(username===USERNAME && password===PASSWORD){
         const token=jwt.sign(
             {user:username},
-            SECRECT_KEY,
-            {expiresIn:"1hr"}
+            SECRET_KEY,
+            {expiresIn:"1h"}
         )
         return res.json({
             token,
